@@ -1,0 +1,92 @@
+body{
+    background-color: #2d302d;
+}
+
+.inputs, #inputText{
+    color: rgb(249, 249, 250);
+    padding-bottom: 30px;
+}
+
+
+
+#longitudeInput, #latitudeInput, #nomeInput{
+    margin: 2px;
+    align-content: center;
+    font-size: large;
+    background-color: #6a6d6a;
+    color: rgb(249, 249, 250);
+    font-weight: bold;
+    border-color: rgb(230, 255, 214);
+
+    
+}
+
+#inputButton{
+    font-size: large;
+    background-color: #8a918a;
+    border-color: rgb(63, 53, 53);
+    color: rgb(249, 249, 250);
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 5px 7px;
+
+
+
+}
+#inputButton:hover{
+    font-weight:900;
+    background-color: #5f5f5f;
+    border-color: rgb(63, 53, 53);
+
+}
+
+
+#title {
+    color: rgb(249, 249, 250);
+}
+
+#map {
+    height: 550px; /* The height is 400 pixels */
+    width: 60%; /* The width is the width of the web page */
+}
+
+#tabela-pontos {
+    margin-top: 20px;
+    width: 60%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tbody {
+    color: rgb(249, 249, 250);
+    font-style: italic;
+    font-size: large;
+}
+
+button {
+    background-color: #8a918a;
+    border-color: rgb(255, 255, 255);
+    color: rgb(249, 249, 250);
+    font-weight: bold;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #45a049; /* Verde mais escuro no hover */
+}
