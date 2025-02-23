@@ -40,7 +40,6 @@
     // Add other bootstrap parameters as needed, using camel case.
   });
   
-  // Initialize and add the map
   let map;
   let infoWindow = null;
   
@@ -58,7 +57,6 @@
     const { Map } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
   
-    // The map, centered at Uluru
     map = new Map(document.getElementById("map"), {
       zoom: 17,
       minZoom: 17,
@@ -83,11 +81,8 @@
     infoWindow.open(map);
   
    
-    // Configure the click listener.
     map.addListener("click", (mapsMouseEvent) => {
-      // Close the current InfoWindow.
       infoWindow.close();
-      // Create a new InfoWindow.
       infoWindow = new google.maps.InfoWindow({
         position: mapsMouseEvent.latLng,
       });
@@ -99,7 +94,6 @@
       const lat = mapsMouseEvent.latLng.lat();
       const lng = mapsMouseEvent.latLng.lng();
   
-      // Preenche os inputs com os valores
       document.getElementById('latitudeInput').value = lat;
       document.getElementById('longitudeInput').value = lng;
     });
@@ -124,12 +118,10 @@
   }
   
   async function addMarker() {
-    // 1. Pegar os valores dos inputs
     const lat = parseFloat(document.getElementById("latitudeInput").value);
     const lng = parseFloat(document.getElementById("longitudeInput").value);
     const nome = document.getElementById("nomeInput").value;
   
-    // 2. Validar se são números
     if (isNaN(lat) || isNaN(lng) || !nome) {
   
       if(isNaN(lat) || isNaN(lng)){
@@ -144,7 +136,6 @@
     
   
   
-    // 3. Criar o marcador no mapa
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
   
     const marker = new AdvancedMarkerElement({
@@ -153,11 +144,9 @@
       title: nome, // Nome do input
     });
   
-    // 4. Opcional: Centralizar no novo marcador
     map.setCenter({ lat: lat, lng: lng });
   
     adicionarLinhaTabela(nome, lat, lng, marker);
-    // 5. Limpar os campos
     document.getElementById("latitudeInput").value = "";
     document.getElementById("longitudeInput").value = "";
     document.getElementById("nomeInput").value = "";
@@ -172,10 +161,8 @@
   function adicionarLinhaTabela(nome, lat, lng, ponto) {
     const tbody = document.getElementById('pontos-body');
   
-      // Cria uma nova linha (<tr>)
       const newRow = document.createElement('tr');
   
-      // Cria as células (<td>)
       const nomeCell = document.createElement('td');
       nomeCell.textContent = nome;
   
@@ -185,24 +172,20 @@
       const lngCell = document.createElement('td');
       lngCell.textContent = lng;
   
-      // Cria a célula do botão
       const actionCell = document.createElement('td');
       const botaoIr = document.createElement('button');
       botaoIr.textContent = 'Ir até o ponto';
       botaoIr.addEventListener('click', () => {
-          // Centraliza o mapa nas coordenadas com zoom alto
           map.setCenter({ lat: lat, lng: lng });
-          map.setZoom(20); // Ajuste o zoom conforme necessário
+          map.setZoom(20); 
       });
       actionCell.appendChild(botaoIr);
   
       const botaoExcluir = document.createElement('button');
       botaoExcluir.textContent = 'Excluir';
-      botaoExcluir.style.marginLeft = '10px'; // Espaçamento entre os botões
+      botaoExcluir.style.marginLeft = '10px'; 
       botaoExcluir.addEventListener('click', () => {
-          // Remove o marcador do mapa
           ponto.setMap(null);
-          // Remove a linha da tabela
           tbody.removeChild(newRow);
           if(infoWindow){
             infoWindow.close()
@@ -212,13 +195,11 @@
   
       
   
-      // Adiciona as células à linha
       newRow.appendChild(nomeCell);
       newRow.appendChild(latCell);
       newRow.appendChild(lngCell);
       newRow.appendChild(actionCell);
   
-      // Adiciona a linha ao corpo da tabela (<tbody>)
       tbody.appendChild(newRow);
   }
   
