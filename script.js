@@ -101,7 +101,6 @@
     try {
       const response = await fetch('/api/markers');
       const markers = await response.json();
-      
       markers.forEach(marker => {
           const newMarker = new AdvancedMarkerElement({
               map: map,
@@ -184,13 +183,24 @@
       const botaoExcluir = document.createElement('button');
       botaoExcluir.textContent = 'Excluir';
       botaoExcluir.style.marginLeft = '10px'; 
-      botaoExcluir.addEventListener('click', () => {
+      botaoExcluir.addEventListener('click', async () => {
           ponto.setMap(null);
           tbody.removeChild(newRow);
-          if(infoWindow){
-            infoWindow.close()
+
+          const response = await fetch(`/api/markers/search?name=${name}&lat=${lat}&lng=${lng}`, {
+            method: 'DELETE'
+          });
+    
+          if (!response.ok) {
+            throw new Error('Falha ao excluir marcador');
           }
-      });
+    
+          if(infoWindow) infoWindow.close();
+          
+        } 
+
+      )
+      
       actionCell.appendChild(botaoExcluir);
   
       

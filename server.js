@@ -25,6 +25,46 @@ app.get("/api/markers", async (req, res) => {
   }
 });
 
+app.get("/api/markers/search", async (req, res) => {
+  try {
+    let { name, lat, lng } = req.query;
+
+    // Remove possíveis aspas dos valores (caso existam)
+    lat = lat.replace(/"/g, '');
+    lng = lng.replace(/"/g, '');
+
+    const marker = await Mark.findOne({ 
+      name: name,
+      lat: lat, 
+      lng: lng 
+    });
+
+    if (!marker) {
+      return res.status(404).json({ 
+        error: "Marcador não encontrado.",
+        query: { name, lat, lng } // Para debug
+      });
+    }
+    
+app.get("/api/markers/:_id", async (req, res) => {
+  try {
+      const marker = await Mark.findById(req.params._id);
+      if (!marker) {
+          return res.status(404).json({ error: "Marcador não encontrado" });
+      }
+      res.json(marker);
+  } catch (err) {
+      res.status(400).json({ error: "ID inválido ou erro no servidor" });
+  }
+});
+
+
+    res.json(marker);
+  } catch (err) {
+    res.status(500).json({ error: "Erro no servidor." });
+  }
+});
+
 app.get("/", function(req, res) {
   res.sendFile(__dirname + "/index.html");
 })
@@ -39,6 +79,17 @@ app.post("/", function(req, res){
     newMarker.save();
     res.redirect("/");
 })
+
+app.delete("/", function(req,res){
+    let markerToDelete = new Mark({
+      name: null,
+      lat: null,
+      lng: null
+    })
+    markerToDelete.deleteOne({name:name, lat:lat, lng:lng })
+    res.redirect("/");
+})
+
 app.listen(3000, function() {
   console.log("server running on 3000")
 })
