@@ -187,7 +187,7 @@
           ponto.setMap(null);
           tbody.removeChild(newRow);
 
-          const response = await fetch(`/api/markers/search?name=${name}&lat=${lat}&lng=${lng}`, {
+          const response = await fetch(`/api/markers?name=${nome}&lat=${lat}&lng=${lng}`, {
             method: 'DELETE'
           });
     

@@ -6,6 +6,7 @@ const bodyParser = require("body-parser")
 app.use(express.static(__dirname));
 app.use(bodyParser.urlencoded({extended: true}));
 
+//mongodb key for connect to your DB. change this to your mongodb atlas connection string.
 mongoose.connect("mongodb+srv://test:test1234@mapsapiproject.n7yka.mongodb.net/MapsAPIProject")
 
 const markerSchema = {
@@ -16,6 +17,7 @@ const markerSchema = {
 
 const Mark = mongoose.model("Marker", markerSchema);
 
+//GET Method to retrieve all data
 app.get("/api/markers", async (req, res) => {
   try {
       const markers = await Mark.find({});
@@ -25,11 +27,10 @@ app.get("/api/markers", async (req, res) => {
   }
 });
 
+//GET Method to a specific object. find by name, lat and lng.
 app.get("/api/markers/search", async (req, res) => {
-  try {
     let { name, lat, lng } = req.query;
 
-    // Remove possíveis aspas dos valores (caso existam)
     lat = lat.replace(/"/g, '');
     lng = lng.replace(/"/g, '');
 
@@ -45,7 +46,9 @@ app.get("/api/markers/search", async (req, res) => {
         query: { name, lat, lng } // Para debug
       });
     }
+  })
     
+//GET Method to find by id.
 app.get("/api/markers/:_id", async (req, res) => {
   try {
       const marker = await Mark.findById(req.params._id);
@@ -54,22 +57,19 @@ app.get("/api/markers/:_id", async (req, res) => {
       }
       res.json(marker);
   } catch (err) {
-      res.status(400).json({ error: "ID inválido ou erro no servidor" });
+      res.status(400).json({ error: "ID inválido" });
   }
-});
 
 
     res.json(marker);
-  } catch (err) {
-    res.status(500).json({ error: "Erro no servidor." });
-  }
-});
+  }) 
 
+//Show HTML File in localhost:3000
 app.get("/", function(req, res) {
   res.sendFile(__dirname + "/index.html");
 })
 
-
+//POST Method
 app.post("/", function(req, res){
     let newMarker = new Mark({
         name: req.body.name,
@@ -80,16 +80,31 @@ app.post("/", function(req, res){
     res.redirect("/");
 })
 
-app.delete("/", function(req,res){
-    let markerToDelete = new Mark({
-      name: null,
-      lat: null,
-      lng: null
-    })
-    markerToDelete.deleteOne({name:name, lat:lat, lng:lng })
-    res.redirect("/");
-})
 
+//DELETE Method
+app.delete("/api/markers", async (req, res) => {
+
+    const { name, lat, lng } = req.query;
+
+    if (!name || !lat || !lng) {
+      return res.status(400).json({ error: "É necessário a inserção dos parametros name, lat e lng" });
+    }
+
+    const result = await Mark.deleteOne({ 
+      name: name,
+      lat: lat,
+      lng: lng 
+    });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: "Marcador não encontrado" });
+    }
+
+    res.json({ message: "Marcador excluído com sucesso" });
+
+});
+
+//Define port 3000 as localhost server port.
 app.listen(3000, function() {
   console.log("server running on 3000")
 })
