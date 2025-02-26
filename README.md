@@ -26,7 +26,7 @@ Detalhes da Aplicação:
 
 4. Abra seu navegador e digite a url abaixo para acessar o projeto.
 	```url
-	localhost:3000
+		localhost:3000
 	```
 
 obs: _futuramente_ será necessário utilizar sua própria chave API Google Maps e chave para se conectar ao MongoDB Atlas.
